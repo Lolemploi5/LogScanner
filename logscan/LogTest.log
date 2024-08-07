@@ -1,0 +1,10 @@
+2023-10-01 10:00:00 ERROR [module1] - NullPointerException at line 42
+2023-10-01 10:01:00 WARN [module2] - Deprecated API usage at line 56
+2023-10-01 10:02:00 INFO [module3] - User logged in
+2023-10-01 10:03:00 ERROR [module1] - ArrayIndexOutOfBoundsException at line 78
+2023-10-01 10:04:00 DEBUG [module4] - Debugging information
+2023-10-01 10:05:00 ERROR [module2] - FileNotFoundException at line 23
+2023-10-01 10:06:00 WARN [module3] - Low disk space
+2023-10-01 10:07:00 INFO [module1] - User logged out
+2023-10-01 10:08:00 ERROR [module4] - IllegalArgumentException at line 90
+2023-10-01 10:09:00 DEBUG [module2] - Debugging information" > sample_log.txt

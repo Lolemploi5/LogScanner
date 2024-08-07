@@ -1,0 +1,8 @@
+{
+    "patterns": {
+        "ERROR": "ERROR",
+        "WARNING": "WARNING",
+        "INFO": "INFO",
+        "DEBUG": "DEBUG"
+    }
+}

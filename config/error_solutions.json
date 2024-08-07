@@ -1,0 +1,11 @@
+{
+    "ERROR": {
+        "ConnectionError": "Vérifiez votre connexion réseau et les paramètres du serveur.",
+        "TimeoutError": "Augmentez le délai d'attente ou vérifiez la charge du serveur.",
+        "FileNotFoundError": "Assurez-vous que le chemin du fichier est correct."
+    },
+    "WARNING": {
+        "DeprecationWarning": "Mettez à jour votre code pour utiliser les méthodes recommandées.",
+        "ResourceWarning": "Libérez les ressources non utilisées pour éviter les fuites."
+    }
+}
