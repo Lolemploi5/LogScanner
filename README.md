@@ -14,7 +14,7 @@ Log Scanner est un outil de scan de fichiers de log avec des options de configur
 1. Clonez ce dépôt ou téléchargez les fichiers nécessaires.
 
 ```
-git clone https://https://github.com/Lolemploi5/LogScanner.git
+git clone https://github.com/Lolemploi5/LogScanner.git
 cd log-scanner
 ```
 Installez les dépendances requises à partir du fichier requirements.txt.
@@ -26,7 +26,7 @@ Fichiers de configuration
 `config/error_solutions.json` : Fichier contenant les solutions pour les erreurs détectées.
 Assurez-vous que ces fichiers sont présents et correctement configurés avant d'utiliser les scripts.
 
-Utilisation
+### Utilisation
 Utilisation via le `terminal`
 Assurez-vous que les fichiers de configuration sont présents dans le dossier config.
 Placez les fichiers de log à analyser dans un dossier spécifique (par exemple, logscan).
@@ -46,7 +46,7 @@ Sélectionner le fichier de configuration.
 Sélectionner le fichier de solutions.
 Parcourir et sélectionner les fichiers de log à analyser.
 Lancer le scan et afficher les rapports et suggestions.
-Fonctionnalités
+### Fonctionnalités
 `LogScanner.py` :
 
 Analyse des fichiers de log via le terminal.
@@ -58,7 +58,7 @@ Interface utilisateur graphique pour une utilisation plus conviviale.
 Sélection facile des fichiers de configuration et de log.
 Affichage des résultats d'analyse et des suggestions directement dans l'UI.
 Visualisation des statistiques sous forme de graphique.
-Exemple de configuration (`config/config.json`)
+### Exemple de configuration (`config/config.json`)
 ```
 {
     "patterns": {
@@ -69,7 +69,7 @@ Exemple de configuration (`config/config.json`)
     }
 }
 ```
-Exemple de solutions (`config/error_solutions.json`)
+### Exemple de solutions (`config/error_solutions.json`)
 ```
 {
     "ERROR": {
@@ -81,7 +81,7 @@ Exemple de solutions (`config/error_solutions.json`)
     }
 }
 ```
-Contributions
+### Contributions
 Les contributions sont les bienvenues ! Veuillez soumettre une pull request ou ouvrir une issue pour discuter des changements que vous souhaitez apporter.
 
 Ce `README.md` explique clairement comment installer et utiliser les deux versions de votre outil, avec des exemples de configuration pour aider les utilisateurs à démarrer rapidement.
