@@ -21,9 +21,9 @@ Installez les dépendances requises à partir du fichier requirements.txt.
 ```
 pip install -r requirements.txt
 ```
-Fichiers de configuration
-`config/config.json` : Fichier de configuration contenant les motifs (patterns) de recherche.
-`config/error_solutions.json` : Fichier contenant les solutions pour les erreurs détectées.
+**Fichiers de configuration :**
+* `config/config.json` : Fichier de configuration contenant les motifs (patterns) de recherche.
+* `config/error_solutions.json` : Fichier contenant les solutions pour les erreurs détectées.
 Assurez-vous que ces fichiers sont présents et correctement configurés avant d'utiliser les scripts.
 
 ### Utilisation
@@ -42,22 +42,22 @@ Exécutez le script `LogScannerUI.py` :
 python LogScannerUI.py
 ```
 Utilisez l'interface utilisateur pour :
-Sélectionner le fichier de configuration.
-Sélectionner le fichier de solutions.
-Parcourir et sélectionner les fichiers de log à analyser.
-Lancer le scan et afficher les rapports et suggestions.
+* Sélectionner le fichier de configuration.
+* Sélectionner le fichier de solutions.
+* Parcourir et sélectionner les fichiers de log à analyser.
+* Lancer le scan et afficher les rapports et suggestions.
 ### Fonctionnalités
 `LogScanner.py` :
 
-Analyse des fichiers de log via le terminal.
-Génération de rapports avec les niveaux de sévérité et suggestions de solutions.
-Affichage des statistiques et visualisation graphique des résultats.
+* Analyse des fichiers de log via le terminal.
+* Génération de rapports avec les niveaux de sévérité et suggestions de solutions.
+* Affichage des statistiques et visualisation graphique des résultats.
 `LogScannerUI.py` :
 
-Interface utilisateur graphique pour une utilisation plus conviviale.
-Sélection facile des fichiers de configuration et de log.
-Affichage des résultats d'analyse et des suggestions directement dans l'UI.
-Visualisation des statistiques sous forme de graphique.
+* Interface utilisateur graphique pour une utilisation plus conviviale.
+* Sélection facile des fichiers de configuration et de log.
+* Affichage des résultats d'analyse et des suggestions directement dans l'UI.
+* Visualisation des statistiques sous forme de graphique.
 ### Exemple de configuration (`config/config.json`)
 ```
 {
