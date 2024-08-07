@@ -125,7 +125,7 @@ class LogScanner:
 class LogScannerUI:
     def __init__(self, root):
         self.root = root
-        self.root.title("Log Scanner UI")
+        self.root.title("Log Scanner UI by Lolemploi5")
 
         self.config_file = ""
         self.solutions_file = ""
