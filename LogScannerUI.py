@@ -1,29 +1,19 @@
 import os
 import re
 import json
-import matplotlib.pyplot as plt
+import tkinter as tk
+from tkinter import filedialog, messagebox, ttk
 from collections import defaultdict
 from typing import Dict
 from colorama import init, Fore, Style
+import matplotlib.pyplot as plt
 from tqdm import tqdm
 import concurrent.futures
 
 init(autoreset=True)
 
-print(f"""{Fore.RED}    
-██╗      ██████╗  ██████╗ ███████╗ ██████╗ █████╗ ███╗   ██╗███╗   ██╗███████╗██████╗ 
-██║     ██╔═══██╗██╔════╝ ██╔════╝██╔════╝██╔══██╗████╗  ██║████╗  ██║██╔════╝██╔══██╗ 
-██║     ██║   ██║██║  ███╗███████╗██║     ███████║██╔██╗ ██║██╔██╗ ██║█████╗  ██████╔╝ 
-██║     ██║   ██║██║   ██║╚════██║██║     ██╔══██║██║╚██╗██║██║╚██╗██║██╔══╝  ██╔══██╗  
-███████╗╚██████╔╝╚██████╔╝███████║╚██████╗██║  ██║██║ ╚████║██║ ╚████║███████╗██║  ██║ 
-╚══════╝ ╚═════╝  ╚═════╝ ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝ 
-      
-{Fore.CYAN}By Lolemploi5{Style.RESET_ALL}
-""" + Style.RESET_ALL)
-
 class LogScanner:
-    def __init__(self, log_directory: str, config_file: str, solutions_file: str):
-        self.log_directory = log_directory
+    def __init__(self, config_file: str, solutions_file: str):
         self.patterns = {}
         self.severity_levels = defaultdict(int)
         self.solutions = {}
@@ -102,7 +92,7 @@ class LogScanner:
             print(f"\n{Fore.BLUE}{file_name}{Style.RESET_ALL}")
             for severity, count in stats.items():
                 color = self._get_severity_color(severity)
-                print(f"{color}{severity}: {count} occurences{Style.RESET_ALL}")
+                print(f"{color}{severity}: {count}{Style.RESET_ALL}")
 
         self.plot_statistics()
 
@@ -132,50 +122,85 @@ class LogScanner:
         else:
             print(f"{Fore.RED}No lines found for severity level {severity}.{Style.RESET_ALL}")
 
-def main():
-    log_directory = 'logscan'
-    config_file = 'config/config.json'
-    solutions_file = 'config/error_solutions.json'
+class LogScannerUI:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Log Scanner UI")
 
-    if not os.path.exists(log_directory):
-        print(f"{Fore.RED}The directory '{log_directory}' does not exist.{Style.RESET_ALL}")
-        return
+        self.config_file = ""
+        self.solutions_file = ""
+        self.selected_files = []
 
-    if not os.path.exists(config_file):
-        print(f"{Fore.RED}Configuration file '{config_file}' not found.{Style.RESET_ALL}")
-        return
+        self.create_widgets()
 
-    if not os.path.exists(solutions_file):
-        print(f"{Fore.RED}Solutions file '{solutions_file}' not found.{Style.RESET_ALL}")
-        return
+    def create_widgets(self):
+        frame = ttk.Frame(self.root, padding="10")
+        frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
 
-    files = [f for f in os.listdir(log_directory) if f.endswith('.log')]
-    if not files:
-        print(f"{Fore.RED}No log files found in '{log_directory}'.{Style.RESET_ALL}")
-        return
+        ttk.Label(frame, text="Configuration File:").grid(row=0, column=0, sticky=tk.W)
+        self.config_entry = ttk.Entry(frame, width=50)
+        self.config_entry.grid(row=0, column=1, sticky=(tk.W, tk.E))
+        ttk.Button(frame, text="Browse", command=self.browse_config).grid(row=0, column=2, sticky=tk.W)
 
-    print(f"{Fore.GREEN}Available log files:{Style.RESET_ALL}")
-    for i, file in enumerate(files):
-        print(f"{Fore.CYAN}{i + 1}. {file} {Style.RESET_ALL}")
+        ttk.Label(frame, text="Solutions File:").grid(row=1, column=0, sticky=tk.W)
+        self.solutions_entry = ttk.Entry(frame, width=50)
+        self.solutions_entry.grid(row=1, column=1, sticky=(tk.W, tk.E))
+        ttk.Button(frame, text="Browse", command=self.browse_solutions).grid(row=1, column=2, sticky=tk.W)
 
-    choice = input("Enter the number of the file to scan, 'all' to scan all files, or a comma-separated list of numbers to scan multiple files: ")
+        ttk.Label(frame, text="Select Log Files:").grid(row=2, column=0, sticky=tk.W)
+        ttk.Button(frame, text="Browse", command=self.browse_files).grid(row=2, column=1, sticky=tk.W)
 
-    if choice == 'all':
-        selected_files = [os.path.join(log_directory, file) for file in files]
-    else:
-        try:
-            selected_indices = [int(i) for i in choice.split(',')]
-            selected_files = [os.path.join(log_directory, files[i - 1]) for i in selected_indices if 1 <= i <= len(files)]
-        except ValueError:
-            print(f"{Fore.RED}Invalid input.{Style.RESET_ALL}")
+        self.file_listbox = tk.Listbox(frame, selectmode=tk.MULTIPLE, width=50, height=10)
+        self.file_listbox.grid(row=3, column=0, columnspan=3, sticky=(tk.W, tk.E))
+
+        ttk.Button(frame, text="Scan Logs", command=self.scan_logs).grid(row=4, column=0, columnspan=3)
+
+        self.report_text = tk.Text(frame, width=80, height=20)
+        self.report_text.grid(row=5, column=0, columnspan=3, sticky=(tk.W, tk.E))
+
+        ttk.Button(frame, text="Show Severity Lines", command=self.show_severity_lines).grid(row=6, column=0, columnspan=3)
+
+    def browse_config(self):
+        self.config_file = filedialog.askopenfilename(filetypes=[("JSON files", "*.json")])
+        self.config_entry.delete(0, tk.END)
+        self.config_entry.insert(0, self.config_file)
+
+    def browse_solutions(self):
+        self.solutions_file = filedialog.askopenfilename(filetypes=[("JSON files", "*.json")])
+        self.solutions_entry.delete(0, tk.END)
+        self.solutions_entry.insert(0, self.solutions_file)
+
+    def browse_files(self):
+        self.selected_files = filedialog.askopenfilenames(filetypes=[("Log files", "*.log")])
+        self.file_listbox.delete(0, tk.END)
+        for file in self.selected_files:
+            self.file_listbox.insert(tk.END, file)
+
+    def scan_logs(self):
+        if not self.config_file or not self.solutions_file or not self.selected_files:
+            messagebox.showerror("Error", "Please select all necessary files.")
             return
 
-    scanner = LogScanner(log_directory, config_file, solutions_file)
-    scanner.scan_logs(selected_files)
-    scanner.print_report()
+        scanner = LogScanner(self.config_file, self.solutions_file)
+        scanner.scan_logs(self.selected_files)
+        self.report_text.delete(1.0, tk.END)
+        report = scanner.generate_report()
+        for severity, count in report.items():
+            self.report_text.insert(tk.END, f"{severity}: {count} occurrences\n")
+        scanner.print_suggestions()
+        scanner.print_statistics()
 
-    severity_choice = input("Enter the severity level to display lines (e.g., ERROR, WARNING, INFO, DEBUG): ").strip()
-    scanner.display_severity_lines(severity_choice.upper())
+    def show_severity_lines(self):
+        severity = tk.simpledialog.askstring("Input", "Enter the severity level to display lines (e.g., ERROR, WARNING, INFO, DEBUG):")
+        if severity:
+            scanner = LogScanner(self.config_file, self.solutions_file)
+            scanner.scan_logs(self.selected_files)
+            lines = scanner.lines_by_severity.get(severity.upper(), [])
+            self.report_text.delete(1.0, tk.END)
+            for line in lines:
+                self.report_text.insert(tk.END, line + "\n")
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = LogScannerUI(root)
+    root.mainloop()
